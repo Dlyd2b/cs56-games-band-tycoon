@@ -1,9 +1,7 @@
-<project name="charactercreator" default="compile">
-    <property name="verbose" value="no" />
-    
-    <property name="root.dir" value=".." />
+<project name="charactercreator" default="compile">    
 	<property name="projectName" value="CharacterCreator" />
-    
+    <property name="root.dir" value=".." />
+	
     <property name="main.dir" value="${root.dir}/${projectName}" />
     <property name="main.src.dir" value="${main.dir}/src"/>
     <property name="main.libs.dir" value="${main.dir}/libs"/>
@@ -24,28 +22,21 @@
     <property name="out.assets.absolute.dir" location="${out.assets.dir}" />
     <property name="out.classes.absolute.dir" location="${out.dir}/classes" />
        
-    <target name="clean" description="Delete non-source files">
-		<!--<delete failonerror="false" verbose="true">
-			<fileset dir="build" includes="*.class"/>
-		</delete> -->
+    <target name="clean" description="Delete non-essential files">
         <delete dir="${out.dir}" quiet="true" />
 		<delete dir="${root.dir}/${ProjectName}/${out.dir}" quiet="true" />
     </target>
     
-    <target name="init-build">
-        <mkdir dir="${out.dir}" />
+    <target name="compile" description="Compiles all source files">
+	<!-- Creates folders for class and and asset files -->
+	    <mkdir dir="${out.dir}" />
         <mkdir dir="${out.assets.dir}" />
         <mkdir dir="${out.classes.absolute.dir}" />
-    </target>
-    
-    <target name="copy-assets">
-        <!-- copy assets from android project -->
-        <copy includeemptydirs="false" todir="${out.assets.dir}">
+	<!-- Copies assets from the android folder into the desktop folder.
+		 This means the coder should only need to place assets in the android folder -->
+		<copy includeemptydirs="false" todir="${out.assets.dir}">
             <fileset dir="${assets.dir}"/>
         </copy>
-    </target>
-    
-    <target name="compile" depends="init-build,copy-assets">
         <path id="javac.classpath">
             <fileset dir="${libs.absolute.dir}">
                 <include name="**/*.jar" />
@@ -59,14 +50,14 @@
             destdir="${out.classes.absolute.dir}"
             classpathref="javac.classpath"
             includeantruntime="false"
-            debug="on"
-            verbose="${verbose}">
+            debug="true"
+			debuglevel="lines,source">
             <src path="${main.src.dir}" />
             <src path="${out.assets.dir}" />
         </javac>
     </target>
     
-    <target name="dist" depends="compile">
+    <target name="dist" description="Creates an executable jar file of the game" depends="compile">
         <jar
             destfile="${out.absolute.dir}/charactercreator.jar"
             basedir="${out.classes.absolute.dir}">
@@ -80,7 +71,7 @@
         </jar>
     </target>
     
-    <target name="run" depends="compile">
+    <target name="run" description="Runs the desktop version of the game" depends="compile">
         <path id="java.classpath">
             <fileset dir="${libs.absolute.dir}">
                 <include name="**/*.jar" />
