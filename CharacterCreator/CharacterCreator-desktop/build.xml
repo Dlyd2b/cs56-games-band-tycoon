@@ -6,6 +6,7 @@
     <property name="main.src.dir" value="${main.dir}/src"/>
     <property name="main.libs.dir" value="${main.dir}/libs"/>
     <property name="main.libs.absolute.dir" location="${main.libs.dir}" />
+	<property name="main.class" value="ucsb.cs56.projects.games.band_tycoon.character_creator.Main" />
     
     <property name="assets.dir" value="${root.dir}/${projectName}-android/assets"/>
     <property name="assets.absolute.dir" location="${assets.dir}"/>
@@ -66,7 +67,7 @@
             <fileset dir="${out.assets.dir}" />
             <manifest>
                 <attribute name="Main-Class" 
-					value="ucsb.cs56.projects.games.band_tycoon.character_creator.Main"/>
+					value="${main.class}"/>
             </manifest>
         </jar>
     </target>
@@ -83,7 +84,7 @@
         </path>
         <java
             fork="true"
-            classname="ucsb.cs56.projects.games.band_tycoon.character_creator.Main"
+            classname="${main.class}"
             classpath="${out.classes.absolute.dir}"
             classpathref="java.classpath"/>
     </target>
