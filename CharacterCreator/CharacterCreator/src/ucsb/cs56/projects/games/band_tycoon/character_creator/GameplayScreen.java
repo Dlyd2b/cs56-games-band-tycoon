@@ -1,4 +1,4 @@
-package com.bt.charactercreator;
+package ucsb.cs56.projects.games.band_tycoon.character_creator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

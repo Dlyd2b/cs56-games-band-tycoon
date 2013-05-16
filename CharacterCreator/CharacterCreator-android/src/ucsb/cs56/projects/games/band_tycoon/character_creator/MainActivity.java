@@ -1,11 +1,11 @@
-package com.bt.charactercreator;
+package ucsb.cs56.projects.games.band_tycoon.character_creator;
 
+import ucsb.cs56.projects.games.band_tycoon.character_creator.CharacterCreator;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.graphics.Texture;
-import com.bt.charactercreator.CharacterCreator;
 
 public class MainActivity extends AndroidApplication {
     @Override

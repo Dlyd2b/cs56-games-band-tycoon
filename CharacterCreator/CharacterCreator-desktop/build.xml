@@ -1,0 +1,100 @@
+<project name="charactercreator" default="compile">
+    <property name="verbose" value="no" />
+    
+    <property name="root.dir" value=".." />
+	<property name="projectName" value="CharacterCreator" />
+    
+    <property name="main.dir" value="${root.dir}/${projectName}" />
+    <property name="main.src.dir" value="${main.dir}/src"/>
+    <property name="main.libs.dir" value="${main.dir}/libs"/>
+    <property name="main.libs.absolute.dir" location="${main.libs.dir}" />
+    
+    <property name="assets.dir" value="${root.dir}/${projectName}-android/assets"/>
+    <property name="assets.absolute.dir" location="${assets.dir}"/>
+    
+    <property name="src.dir" value="src" />
+    <property name="src.absolute.dir" location="${src.dir}" />
+    
+    <property name="libs.dir" value="libs" />
+    <property name="libs.absolute.dir" location="${libs.dir}" />
+    
+    <property name="out.dir" value="bin" />
+    <property name="out.absolute.dir" location="${out.dir}" />
+    <property name="out.assets.dir" value="${out.dir}/assets" />
+    <property name="out.assets.absolute.dir" location="${out.assets.dir}" />
+    <property name="out.classes.absolute.dir" location="${out.dir}/classes" />
+       
+    <target name="clean" description="Delete non-source files">
+		<!--<delete failonerror="false" verbose="true">
+			<fileset dir="build" includes="*.class"/>
+		</delete> -->
+        <delete dir="${out.dir}" quiet="true" />
+		<delete dir="${root.dir}/${ProjectName}/${out.dir}" quiet="true" />
+    </target>
+    
+    <target name="init-build">
+        <mkdir dir="${out.dir}" />
+        <mkdir dir="${out.assets.dir}" />
+        <mkdir dir="${out.classes.absolute.dir}" />
+    </target>
+    
+    <target name="copy-assets">
+        <!-- copy assets from android project -->
+        <copy includeemptydirs="false" todir="${out.assets.dir}">
+            <fileset dir="${assets.dir}"/>
+        </copy>
+    </target>
+    
+    <target name="compile" depends="init-build,copy-assets">
+        <path id="javac.classpath">
+            <fileset dir="${libs.absolute.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <fileset dir="${main.libs.absolute.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+        </path>
+        <javac
+            srcdir="${src.dir}"
+            destdir="${out.classes.absolute.dir}"
+            classpathref="javac.classpath"
+            includeantruntime="false"
+            debug="on"
+            verbose="${verbose}">
+            <src path="${main.src.dir}" />
+            <src path="${out.assets.dir}" />
+        </javac>
+    </target>
+    
+    <target name="dist" depends="compile">
+        <jar
+            destfile="${out.absolute.dir}/charactercreator.jar"
+            basedir="${out.classes.absolute.dir}">
+            <zipgroupfileset dir="${libs.absolute.dir}" includes="*.jar"/>
+            <zipgroupfileset dir="${main.libs.absolute.dir}" includes="*.jar"/>
+            <fileset dir="${out.assets.dir}" />
+            <manifest>
+                <attribute name="Main-Class" 
+					value="ucsb.cs56.projects.games.band_tycoon.character_creator.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="compile">
+        <path id="java.classpath">
+            <fileset dir="${libs.absolute.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <fileset dir="${main.libs.absolute.dir}">
+                <include name="**/*.jar" />
+            </fileset>
+            <pathelement location="${out.assets.absolute.dir}" />
+        </path>
+        <java
+            fork="true"
+            classname="ucsb.cs56.projects.games.band_tycoon.character_creator.Main"
+            classpath="${out.classes.absolute.dir}"
+            classpathref="java.classpath"/>
+    </target>
+
+</project>
